@@ -19,7 +19,7 @@ A full-stack MERN application that allows users to write, compile, and run code 
 | Backend | Node.js + Express |
 | Database | MongoDB |
 | Code Editor | Monaco Editor |
-| Code Execution | Judge0 API (RapidAPI) |
+| Code Execution | Groq AI (LLaMA 3.3 70B) |
 | Authentication | JWT |
 
 ## 📋 Prerequisites
