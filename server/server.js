@@ -9,8 +9,30 @@ const submissionRoutes = require('./routes/submissions');
 
 const app = express();
 
+// CORS Configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    // Get allowed origins from environment variable
+    const allowedOrigins = process.env.FRONTEND_URL
+      ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
+      : ['http://localhost:5173', 'http://localhost:3000'];
+
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for now (you can make this stricter)
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // MongoDB Connection

@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
-
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config/api';
 
 const SharedCode = () => {
     const { shareId } = useParams();

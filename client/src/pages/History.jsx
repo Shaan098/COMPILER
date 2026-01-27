@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config/api';
 
 const History = () => {
     const [submissions, setSubmissions] = useState([]);

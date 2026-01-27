@@ -3,8 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
-
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config/api';
 
 const DEFAULT_CODE = `# Python Code
 print("Hello, World!")`;

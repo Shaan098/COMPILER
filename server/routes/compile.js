@@ -164,20 +164,30 @@ router.post('/run', authMiddleware, async (req, res) => {
         // Execute using Groq AI
         const result = await executeWithGroq(code, language, input);
 
-        // Save submission to database
-        const submission = new Submission({
-            user: req.user?.userId || null,
-            code,
-            language,
-            languageId,
-            input,
-            output: result.output,
-            status: result.status,
-            executionTime: result.executionTime,
-            memory: result.memory
-        });
+        // Try to save submission to database (optional - don't fail if DB is down)
+        let submissionId = null;
+        let shareId = null;
+        
+        try {
+            const submission = new Submission({
+                user: req.user?.userId || null,
+                code,
+                language,
+                languageId,
+                input,
+                output: result.output,
+                status: result.status,
+                executionTime: result.executionTime,
+                memory: result.memory
+            });
 
-        await submission.save();
+            await submission.save();
+            submissionId = submission._id;
+            shareId = submission.shareId;
+        } catch (dbError) {
+            console.warn('⚠️ Could not save to database:', dbError.message);
+            // Continue without saving - user still gets their output
+        }
 
         res.json({
             success: result.success,
@@ -185,8 +195,8 @@ router.post('/run', authMiddleware, async (req, res) => {
             output: result.output,
             executionTime: result.executionTime,
             memory: result.memory,
-            submissionId: submission._id,
-            shareId: submission.shareId,
+            submissionId,
+            shareId,
             aiPowered: true
         });
 
