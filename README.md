@@ -18,13 +18,7 @@ A full-stack MERN application that allows users to write, compile, and run code 
 | Frontend | React + Vite |
 | Backend | Node.js + Express |
 | Database | MongoDB |
-| Code Editor | Monaco Editor |
 | Code Execution | Groq AI (LLaMA 3.3 70B) |
 | Authentication | JWT |
 
-## 📋 Prerequisites
-
-1. **Node.js** (v18 or higher)
-2. **MongoDB** (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
-3. **RapidAPI Key** for Judge0 (free tier available)
 
