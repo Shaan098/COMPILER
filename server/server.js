@@ -35,10 +35,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/online-compiler')
+// MongoDB Connection with timeout settings
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/online-compiler', {
+  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+  socketTimeoutMS: 45000,
+})
   .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB Connection Error:', err));
+  .catch(err => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    console.log('⚠️ Server will continue running without database support');
+  });
 
 // Routes
 app.use('/api/compile', compileRoutes);
