@@ -53,24 +53,26 @@ const executeWithGroq = async (code, language, input = '') => {
         'javascript': 'JavaScript'
     };
 
-    const prompt = `You are a code execution engine. Execute the following ${languageNames[language]} code and provide ONLY the output that would be printed to the console. Do not include any explanations, just the raw output.
+    let enhancedPrompt = `You are a code execution simulator. You will simulate running the following ${languageNames[language]} code and provide ONLY the exact output that would be printed to the console.
 
-If there are syntax errors or runtime errors, respond with the error message in a format typical for ${languageNames[language]}.
+${input ? `IMPORTANT - USER PROVIDED INPUT (stdin):
+The program will read input values from stdin. Here are the values the user will provide, in order:
+${input.split('\n').map((line, i) => `  Line ${i + 1}: "${line}"`).join('\n')}
 
-${input ? `The program will read the following input from stdin (one value per line):
-\`\`\`
-${input}
-\`\`\`
+When you see input functions like input(), scanf(), cin >>, Scanner.nextLine(), etc., use these values IN THE ORDER SHOWN ABOVE.
 
-Important: When the code uses input(), scanf(), cin, or similar functions, use the values provided above IN ORDER. Each input function call should consume the next line of input. Execute the code as if the user typed these values when prompted.
-` : 'The program does not require any input.'}
+Example: If the code calls input() twice, the first call gets "${input.split('\n')[0] || ''}" and the second call gets "${input.split('\n')[1] || ''}".
 
-Code:
+` : ''}Code:
 \`\`\`${language}
 ${code}
 \`\`\`
 
-Execute this code step by step. If input functions are called, use the provided stdin values. Respond with ONLY the console output, nothing else. If the code produces no output, respond with an empty line.`;
+${input ? `Remember: Use the provided input values "${input.split('\n').join('", "')}" when input functions are called.` : ''}
+
+Execute this code and respond with ONLY the console output. Include the prompts (like "Enter name:") if the code prints them, followed by the actual program output using the provided input values. Do not include explanations.`;
+
+    const prompt = enhancedPrompt;
 
     try {
         const startTime = Date.now();
