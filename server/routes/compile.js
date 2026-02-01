@@ -57,14 +57,20 @@ const executeWithGroq = async (code, language, input = '') => {
 
 If there are syntax errors or runtime errors, respond with the error message in a format typical for ${languageNames[language]}.
 
-${input ? `Standard Input (stdin): ${input}` : ''}
+${input ? `The program will read the following input from stdin (one value per line):
+\`\`\`
+${input}
+\`\`\`
+
+Important: When the code uses input(), scanf(), cin, or similar functions, use the values provided above IN ORDER. Each input function call should consume the next line of input. Execute the code as if the user typed these values when prompted.
+` : 'The program does not require any input.'}
 
 Code:
 \`\`\`${language}
 ${code}
 \`\`\`
 
-Respond with ONLY the console output, nothing else. If the code produces no output, respond with an empty line.`;
+Execute this code step by step. If input functions are called, use the provided stdin values. Respond with ONLY the console output, nothing else. If the code produces no output, respond with an empty line.`;
 
     try {
         const startTime = Date.now();
@@ -167,7 +173,7 @@ router.post('/run', authMiddleware, async (req, res) => {
         // Try to save submission to database (optional - don't fail if DB is down)
         let submissionId = null;
         let shareId = null;
-        
+
         try {
             const submission = new Submission({
                 user: req.user?.userId || null,

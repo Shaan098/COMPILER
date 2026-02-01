@@ -19,6 +19,7 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [showOutput, setShowOutput] = useState(false);
     const [stdin, setStdin] = useState(''); // User input for stdin
+    const [showInput, setShowInput] = useState(false); // Toggle input field visibility
 
     const runCode = async () => {
         setLoading(true);
@@ -113,18 +114,30 @@ const Home = () => {
                     loading={loading}
                 />
 
-                {/* Input Field for stdin */}
-                <div className="stdin-input-container">
-                    <label htmlFor="stdin">📥 Input (stdin):</label>
-                    <textarea
-                        id="stdin"
-                        className="stdin-textarea"
-                        placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)\n\nExample for multiple inputs:\n5\nJohn\n\nEach line will be read by your program."
-                        value={stdin}
-                        onChange={(e) => setStdin(e.target.value)}
-                        rows="4"
-                    />
+                {/* Toggle Input Button */}
+                <div className="stdin-toggle-container">
+                    <button
+                        className={`stdin-toggle-btn ${showInput ? 'active' : ''}`}
+                        onClick={() => setShowInput(!showInput)}
+                    >
+                        {showInput ? '📥 Hide Input' : '📥 Add Input (Optional)'}
+                    </button>
                 </div>
+
+                {/* Collapsible Input Field */}
+                {showInput && (
+                    <div className="stdin-input-container">
+                        <label htmlFor="stdin">Input (stdin):</label>
+                        <textarea
+                            id="stdin"
+                            className="stdin-textarea"
+                            placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)\n\nExample for multiple inputs:\n5\nJohn\n\nEach line will be read by your program."
+                            value={stdin}
+                            onChange={(e) => setStdin(e.target.value)}
+                            rows="4"
+                        />
+                    </div>
+                )}
             </div>
 
             {/* Sliding Output Panel */}
