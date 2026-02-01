@@ -385,6 +385,69 @@ body {
 }
 
 /* ===============================================
+   Stdin Input Field
+   =============================================== */
+.stdin-input-container {
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.stdin-input-container:focus-within {
+  background: var(--bg-card);
+  border-top-color: var(--accent-primary);
+  box-shadow: inset 0 4px 20px rgba(139, 92, 246, 0.08);
+}
+
+.stdin-input-container label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stdin-textarea {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  transition: all 0.3s ease;
+}
+
+.stdin-textarea::placeholder {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.stdin-textarea:hover {
+  border-color: var(--accent-primary);
+}
+
+.stdin-textarea:focus {
+  border-color: var(--accent-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  background: var(--bg-secondary);
+}
+
+
+/* ===============================================
    Code Editor - Interactive
    =============================================== */
 .code-editor-container {

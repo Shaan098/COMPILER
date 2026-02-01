@@ -18,6 +18,7 @@ const Home = () => {
     const [shareId, setShareId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showOutput, setShowOutput] = useState(false);
+    const [stdin, setStdin] = useState(''); // User input for stdin
 
     const runCode = async () => {
         setLoading(true);
@@ -28,7 +29,8 @@ const Home = () => {
         try {
             const response = await axios.post(`${API_URL}/compile/run`, {
                 code,
-                language
+                language,
+                input: stdin // Send user input to backend
             });
 
             const data = response.data;
@@ -110,6 +112,19 @@ const Home = () => {
                     onRun={runCode}
                     loading={loading}
                 />
+
+                {/* Input Field for stdin */}
+                <div className="stdin-input-container">
+                    <label htmlFor="stdin">📥 Input (stdin):</label>
+                    <textarea
+                        id="stdin"
+                        className="stdin-textarea"
+                        placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)\n\nExample for multiple inputs:\n5\nJohn\n\nEach line will be read by your program."
+                        value={stdin}
+                        onChange={(e) => setStdin(e.target.value)}
+                        rows="4"
+                    />
+                </div>
             </div>
 
             {/* Sliding Output Panel */}
