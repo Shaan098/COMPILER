@@ -93,7 +93,16 @@ const Home = () => {
 
     const handleQuickStart = (langId) => {
         setLanguage(langId);
+        setCode(CODE_TEMPLATES[langId]);
         scrollToEditor();
+    };
+
+    // Handle language tab click - update code template
+    const handleLanguageChange = (langId) => {
+        setLanguage(langId);
+        setCode(CODE_TEMPLATES[langId]);
+        const langName = LANGUAGES.find(l => l.id === langId)?.name;
+        toast.success(`Switched to ${langName}!`);
     };
 
     const runCode = async () => {
