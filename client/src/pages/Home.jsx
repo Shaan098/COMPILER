@@ -247,6 +247,11 @@ const Home = () => {
 
             {/* Side-by-Side Output Panel */}
             <div className={`output-panel-side ${output ? 'hasOutput' : ''}`}>
+                {output && (
+                    <button className="close-output-btn" onClick={() => setOutput('')}>
+                        ✕ Close
+                    </button>
+                )}
                 {output ? (
                     <OutputPanel
                         output={output}
@@ -256,12 +261,7 @@ const Home = () => {
                         shareId={shareId}
                         onShare={handleShare}
                     />
-                ) : (
-                    <div className="placeholder">
-                        <div className="placeholder-icon">📊</div>
-                        <p>Run your code to see the output here</p>
-                    </div>
-                )}
+                ) : null}
             </div>
 
             {/* Floating Action Button */}
