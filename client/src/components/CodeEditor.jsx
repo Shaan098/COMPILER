@@ -85,7 +85,7 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
                     onChange={(value) => setCode(value || '')}
                     theme="vs-dark"
                     options={{
-                        fontSize: 14,
+                        fontSize: 16,
                         minimap: { enabled: false },
                         scrollBeyondLastLine: false,
                         automaticLayout: true,

@@ -381,9 +381,23 @@ body {
 }
 
 .full-editor-container {
-  min-height: calc(100vh - 65px);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
+}
+
+/* ===============================================
+   Code Editor - Interactive
+   =============================================== */
+.code-editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+  min-height: 600px;
 }
 
 /* ===============================================
@@ -929,14 +943,7 @@ body {
 /* ===============================================
    Code Editor - Interactive
    =============================================== */
-.code-editor-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  transition: border-color 0.3s ease;
-}
+
 
 .code-editor-container:focus-within {
   border-color: var(--accent-primary);
@@ -1094,7 +1101,7 @@ body {
 
 .editor-wrapper {
   flex: 1;
-  min-height: 0;
+  min-height: 500px;
 }
 
 /* ===============================================
