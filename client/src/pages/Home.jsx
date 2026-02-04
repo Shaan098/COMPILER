@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CodeEditor from '../components/CodeEditor';
@@ -7,6 +7,37 @@ import API_URL from '../config/api';
 
 const DEFAULT_CODE = `# Python Code
 print("Hello, World!")`;
+
+const LANGUAGES = [
+    { id: 'python', name: 'Python', icon: '🐍', color: '#3776ab' },
+    { id: 'javascript', name: 'JavaScript', icon: '📜', color: '#f7df1e' },
+    { id: 'c', name: 'C', icon: '©️', color: '#a8b9cc' },
+    { id: 'cpp', name: 'C++', icon: '➕', color: '#00599c' },
+    { id: 'java', name: 'Java', icon: '☕', color: '#ea2d2e' }
+];
+
+const FEATURES = [
+    {
+        icon: '⚡',
+        title: 'Lightning Fast',
+        description: 'AI-powered code execution with instant results'
+    },
+    {
+        icon: '🌐',
+        title: 'Multi-Language',
+        description: 'Support for C, C++, Python, Java & JavaScript'
+    },
+    {
+        icon: '🔗',
+        title: 'Easy Sharing',
+        description: 'Share your code with a single click'
+    },
+    {
+        icon: '💾',
+        title: 'Auto Save',
+        description: 'Never lose your work with automatic history'
+    }
+];
 
 const Home = () => {
     const [code, setCode] = useState(DEFAULT_CODE);
@@ -18,8 +49,22 @@ const Home = () => {
     const [shareId, setShareId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showOutput, setShowOutput] = useState(false);
-    const [stdin, setStdin] = useState(''); // User input for stdin
-    const [showInput, setShowInput] = useState(false); // Toggle input field visibility
+    const [stdin, setStdin] = useState('');
+    const [showInput, setShowInput] = useState(false);
+    const [showHero, setShowHero] = useState(true);
+    const editorRef = useRef(null);
+
+    const scrollToEditor = () => {
+        setShowHero(false);
+        setTimeout(() => {
+            editorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    };
+
+    const handleQuickStart = (langId) => {
+        setLanguage(langId);
+        scrollToEditor();
+    };
 
     const runCode = async () => {
         setLoading(true);
@@ -31,7 +76,7 @@ const Home = () => {
             const response = await axios.post(`${API_URL}/compile/run`, {
                 code,
                 language,
-                input: stdin // Send user input to backend
+                input: stdin
             });
 
             const data = response.data;
@@ -40,7 +85,7 @@ const Home = () => {
             setExecutionTime(data.executionTime);
             setMemory(data.memory);
             setShareId(data.shareId);
-            setShowOutput(true); // Show output panel after running
+            setShowOutput(true);
 
             if (data.status === 'success') {
                 toast.success('Code executed successfully!', {
@@ -103,8 +148,68 @@ const Home = () => {
                 }}
             />
 
+            {/* Hero Section */}
+            {showHero && (
+                <div className="hero-section">
+                    <div className="hero-content">
+                        <div className="hero-badge">
+                            <span className="badge-icon">✨</span>
+                            <span>AI-Powered Compiler</span>
+                        </div>
+                        <h1 className="hero-title">
+                            Code. Compile.
+                            <br />
+                            <span className="gradient-text">Create Magic.</span>
+                        </h1>
+                        <p className="hero-subtitle">
+                            Write and execute code in multiple languages instantly.
+                            <br />
+                            Powered by Groq AI for blazing-fast performance.
+                        </p>
+                        <button className="cta-button" onClick={scrollToEditor}>
+                            <span className="cta-icon">🚀</span>
+                            Start Coding Now
+                            <span className="cta-arrow">→</span>
+                        </button>
+
+                        {/* Feature Cards */}
+                        <div className="features-grid">
+                            {FEATURES.map((feature, index) => (
+                                <div key={index} className="feature-card" style={{ animationDelay: `${index * 0.1}s` }}>
+                                    <div className="feature-icon">{feature.icon}</div>
+                                    <h3 className="feature-title">{feature.title}</h3>
+                                    <p className="feature-description">{feature.description}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Quick Language Selector */}
+                        <div className="quick-start-section">
+                            <h3 className="quick-start-title">Quick Start with:</h3>
+                            <div className="language-grid">
+                                {LANGUAGES.map((lang) => (
+                                    <button
+                                        key={lang.id}
+                                        className="language-card"
+                                        onClick={() => handleQuickStart(lang.id)}
+                                    >
+                                        <span className="lang-icon">{lang.icon}</span>
+                                        <span className="lang-name">{lang.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="scroll-indicator" onClick={scrollToEditor}>
+                            <span className="scroll-text">Scroll to Editor</span>
+                            <span className="scroll-icon">↓</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Full Screen Editor */}
-            <div className="full-editor-container">
+            <div className="full-editor-container" ref={editorRef}>
                 <CodeEditor
                     code={code}
                     setCode={setCode}
@@ -131,7 +236,7 @@ const Home = () => {
                         <textarea
                             id="stdin"
                             className="stdin-textarea"
-                            placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)\n\nExample for multiple inputs:\n5\nJohn\n\nEach line will be read by your program."
+                            placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)&#10;&#10;Example for multiple inputs:&#10;5&#10;John&#10;&#10;Each line will be read by your program."
                             value={stdin}
                             onChange={(e) => setStdin(e.target.value)}
                             rows="4"
@@ -156,6 +261,13 @@ const Home = () => {
                     />
                 </div>
             </div>
+
+            {/* Floating Action Button */}
+            {!showHero && (
+                <button className="fab-home" onClick={() => setShowHero(true)} title="Back to Home">
+                    <span>🏠</span>
+                </button>
+            )}
         </div>
     );
 };
