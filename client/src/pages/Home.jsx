@@ -51,7 +51,7 @@ const Home = () => {
     const [showOutput, setShowOutput] = useState(false);
     const [stdin, setStdin] = useState('');
     const [showInput, setShowInput] = useState(false);
-    const [showHero, setShowHero] = useState(true);
+    const [showHero, setShowHero] = useState(false); // Skip hero
     const editorRef = useRef(null);
 
     const scrollToEditor = () => {
@@ -208,60 +208,77 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Full Screen Editor */}
+            {/* Programiz-Style 3-Column Layout */}
             <div className="full-editor-container" ref={editorRef}>
-                <CodeEditor
-                    code={code}
-                    setCode={setCode}
-                    language={language}
-                    setLanguage={setLanguage}
-                    onRun={runCode}
-                    loading={loading}
-                />
-
-                {/* Toggle Input Button */}
-                <div className="stdin-toggle-container">
-                    <button
-                        className={`stdin-toggle-btn ${showInput ? 'active' : ''}`}
-                        onClick={() => setShowInput(!showInput)}
-                    >
-                        {showInput ? '📥 Hide Input' : '📥 Add Input (Optional)'}
-                    </button>
+                {/* Column 1: Language Sidebar */}
+                <div className="language-sidebar">
+                    {LANGUAGES.map((lang) => (
+                        <button
+                            key={lang.id}
+                            className={`lang-tab ${language === lang.id ? 'active' : ''}`}
+                            onClick={() => setLanguage(lang.id)}
+                            title={lang.name}
+                        >
+                            {lang.icon}
+                        </button>
+                    ))}
                 </div>
 
-                {/* Collapsible Input Field */}
-                {showInput && (
-                    <div className="stdin-input-container">
-                        <label htmlFor="stdin">Input (stdin):</label>
-                        <textarea
-                            id="stdin"
-                            className="stdin-textarea"
-                            placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)&#10;&#10;Example for multiple inputs:&#10;5&#10;John&#10;&#10;Each line will be read by your program."
-                            value={stdin}
-                            onChange={(e) => setStdin(e.target.value)}
-                            rows="4"
-                        />
-                    </div>
-                )}
-            </div>
-
-            {/* Side-by-Side Output Panel */}
-            <div className={`output-panel-side ${output ? 'hasOutput' : ''}`}>
-                {output && (
-                    <button className="close-output-btn" onClick={() => setOutput('')}>
-                        ✕ Close
-                    </button>
-                )}
-                {output ? (
-                    <OutputPanel
-                        output={output}
-                        status={status}
-                        executionTime={executionTime}
-                        memory={memory}
-                        shareId={shareId}
-                        onShare={handleShare}
+                {/* Column 2: Main Editor Area */}
+                <div className="editor-main-area">
+                    <CodeEditor
+                        code={code}
+                        setCode={setCode}
+                        language={language}
+                        setLanguage={setLanguage}
+                        onRun={runCode}
+                        loading={loading}
                     />
-                ) : null}
+
+                    {/* Toggle Input Button */}
+                    <div className="stdin-toggle-container">
+                        <button
+                            className={`stdin-toggle-btn ${showInput ? 'active' : ''}`}
+                            onClick={() => setShowInput(!showInput)}
+                        >
+                            {showInput ? '📥 Hide Input' : '📥 Add Input (Optional)'}
+                        </button>
+                    </div>
+
+                    {/* Collapsible Input Field */}
+                    {showInput && (
+                        <div className="stdin-input-container">
+                            <label htmlFor="stdin">Input (stdin):</label>
+                            <textarea
+                                id="stdin"
+                                className="stdin-textarea"
+                                placeholder="Enter input here (if your code uses input(), scanf, cin, etc.)&#10;&#10;Example for multiple inputs:&#10;5&#10;John&#10;&#10;Each line will be read by your program."
+                                value={stdin}
+                                onChange={(e) => setStdin(e.target.value)}
+                                rows="4"
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {/* Column 3: Permanent Output Panel */}
+                <div className={`output-panel-side ${output ? 'hasOutput' : ''}`}>
+                    {output ? (
+                        <OutputPanel
+                            output={output}
+                            status={status}
+                            executionTime={executionTime}
+                            memory={memory}
+                            shareId={shareId}
+                            onShare={handleShare}
+                        />
+                    ) : (
+                        <div className="output-placeholder">
+                            <div className="output-placeholder-icon">📊</div>
+                            <p><strong>Run Code</strong> to see output here</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Floating Action Button */}
