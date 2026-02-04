@@ -1015,16 +1015,18 @@ body {
 
 /* Animated Run Button */
 .run-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
   background: var(--gradient-ocean);
   color: white;
   border: none;
-  padding: 0.85rem 2.5rem;
+  padding: 0.9rem 2rem;
   border-radius: 12px;
   font-size: 1rem;
   font-weight: 700;
+  line-height: 1;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
