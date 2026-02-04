@@ -5,8 +5,38 @@ import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
 import API_URL from '../config/api';
 
-const DEFAULT_CODE = `# Python Code
-print("Hello, World!")`;
+// Code templates for each language
+const CODE_TEMPLATES = {
+    python: `# Python Code
+print("Hello, World!")`,
+
+    javascript: `// JavaScript Code
+console.log("Hello, World!");`,
+
+    c: `// C Code
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\\n");
+    return 0;
+}`,
+
+    cpp: `// C++ Code
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, World!" << endl;
+    return 0;
+}`,
+
+    java: `// Java Code
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}`
+};
 
 const LANGUAGES = [
     { id: 'python', name: 'Python', icon: '🐍', color: '#3776ab' },
@@ -40,7 +70,7 @@ const FEATURES = [
 ];
 
 const Home = () => {
-    const [code, setCode] = useState(DEFAULT_CODE);
+    const [code, setCode] = useState(CODE_TEMPLATES.python);
     const [language, setLanguage] = useState('python');
     const [output, setOutput] = useState('');
     const [status, setStatus] = useState(null);
@@ -216,7 +246,7 @@ const Home = () => {
                         <button
                             key={lang.id}
                             className={`lang-tab ${language === lang.id ? 'active' : ''}`}
-                            onClick={() => setLanguage(lang.id)}
+                            onClick={() => handleLanguageChange(lang.id)}
                             title={lang.name}
                         >
                             {lang.icon}
