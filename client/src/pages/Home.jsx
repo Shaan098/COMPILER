@@ -245,12 +245,9 @@ const Home = () => {
                 )}
             </div>
 
-            {/* Sliding Output Panel */}
-            <div className={`output-overlay ${showOutput ? 'visible' : ''}`}>
-                <div className={`output-slide-panel ${showOutput ? 'open' : ''}`}>
-                    <button className="close-output-btn" onClick={closeOutput}>
-                        ✕ Close
-                    </button>
+            {/* Side-by-Side Output Panel */}
+            <div className={`output-panel-side ${output ? 'hasOutput' : ''}`}>
+                {output ? (
                     <OutputPanel
                         output={output}
                         status={status}
@@ -259,7 +256,12 @@ const Home = () => {
                         shareId={shareId}
                         onShare={handleShare}
                     />
-                </div>
+                ) : (
+                    <div className="placeholder">
+                        <div className="placeholder-icon">📊</div>
+                        <p>Run your code to see the output here</p>
+                    </div>
+                )}
             </div>
 
             {/* Floating Action Button */}
