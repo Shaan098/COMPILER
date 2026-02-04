@@ -9,10 +9,10 @@
    =============================================== */
 :root,
 [data-theme="dark"] {
-  --bg-primary: #0a0a12;
-  --bg-secondary: #12121f;
+  --bg-primary: #1a1410;
+  --bg-secondary: #2a221a;
   --bg-tertiary: #492828;
-  --bg-card: #16162a;
+  --bg-card: #2a221a;
 
   --text-primary: #ECECEC;
   --text-secondary: #c4c4c4;
