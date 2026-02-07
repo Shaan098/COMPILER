@@ -5,12 +5,12 @@ A full-stack MERN application that allows users to write, compile, and run code 
 
 ✨ Features..
 
-- **Multi-Language Support**: C, C++, Python, Java, JavaScript
-- **Monaco Editor**: Professional VS Code-like editor with syntax highlighting
-- **User Authentication**: Register/Login to save your code history
-- **Code History**: View all your past submissions
-- **Share Code**: Generate shareable links for your code
-- **Modern Dark UI**: Beautiful, responsive interface
+- **Multi-Language Support**: C, C++, Python, Java, JavaScript.
+- **Monaco Editor**: Professional VS Code-like editor with syntax highlighting.
+- **User Authentication**: Register/Login to save your code history.
+- **Code History**: View all your past submissions.
+- **Share Code**: Generate shareable links for your code.
+- **Modern Dark UI**: Beautiful, responsive interface.
 
 ## 🛠️ Tech Stack
 
