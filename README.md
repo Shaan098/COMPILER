@@ -18,6 +18,5 @@ A full-stack MERN application that allows users to write, compile, and run code 
 | Database | MongoDB |
 | Code Execution | Groq AI (LLaMA 3.3 70B) |
 | Authentication | JWT |
-
 THANK YOU...
 
