@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import API_URL from '../config/api';
+import api from '../config/api';
 
 const History = () => {
     const [submissions, setSubmissions] = useState([]);
@@ -20,7 +19,7 @@ const History = () => {
 
     const fetchSubmissions = async () => {
         try {
-            const res = await axios.get(`${API_URL}/submissions/my`);
+            const res = await api.get('/submissions/my');
             setSubmissions(res.data.submissions);
         } catch (error) {
             console.error('Error fetching submissions:', error);
@@ -33,7 +32,7 @@ const History = () => {
         if (!window.confirm('Delete this submission?')) return;
 
         try {
-            await axios.delete(`${API_URL}/submissions/${id}`);
+            await api.delete(`/submissions/${id}`);
             setSubmissions(submissions.filter(s => s._id !== id));
         } catch (error) {
             console.error('Error deleting submission:', error);

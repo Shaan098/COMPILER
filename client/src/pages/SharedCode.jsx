@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
-import API_URL from '../config/api';
+import api from '../config/api';
 
 const SharedCode = () => {
     const { shareId } = useParams();
@@ -25,7 +24,7 @@ const SharedCode = () => {
 
     const fetchSharedCode = async () => {
         try {
-            const res = await axios.get(`${API_URL}/compile/share/${shareId}`);
+            const res = await api.get(`/compile/share/${shareId}`);
             setCode(res.data.code);
             setLanguage(res.data.language);
             setOriginalOutput(res.data.output);
@@ -45,7 +44,7 @@ const SharedCode = () => {
         setStatus(null);
 
         try {
-            const response = await axios.post(`${API_URL}/compile/run`, {
+            const response = await api.post('/compile/run', {
                 code,
                 language
             });

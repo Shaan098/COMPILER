@@ -1,9 +1,8 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
-import API_URL from '../config/api';
+import api from '../config/api';
 
 // Code templates for each language
 const CODE_TEMPLATES = {
@@ -112,7 +111,7 @@ const Home = () => {
         setShareId(null);
 
         try {
-            const response = await axios.post(`${API_URL}/compile/run`, {
+            const response = await api.post('/compile/run', {
                 code,
                 language,
                 input: stdin
