@@ -9,24 +9,32 @@ import History from './pages/History';
 import SharedCode from './pages/SharedCode';
 import './App.css';
 
+function AppContent() {
+  // Don't block the UI - allow immediate rendering
+  // The auth check happens in background
+  return (
+    <Router>
+      <div className="app">
+        <Header />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/share/:shareId" element={<SharedCode />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
-          <div className="app">
-            <Header />
-            <main className="main-content">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/share/:shareId" element={<SharedCode />} />
-              </Routes>
-            </main>
-          </div>
-        </Router>
+        <AppContent />
       </AuthProvider>
     </ThemeProvider>
   );

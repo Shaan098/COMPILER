@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-
-const ThemeContext = createContext();
+import { useState, useEffect } from 'react';
+import { ThemeContext } from '../hooks/useTheme';
 
 export const ThemeProvider = ({ children }) => {
     // initialize theme from localStorage (or default) and apply it synchronously
@@ -30,8 +29,3 @@ export const ThemeProvider = ({ children }) => {
         </ThemeContext.Provider>
     );
 };
-
-export const useTheme = () => useContext(ThemeContext);
-
-// export raw context for advanced usage
-export default ThemeContext;

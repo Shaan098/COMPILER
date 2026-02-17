@@ -22,7 +22,11 @@ export const AuthProvider = ({ children }) => {
             const res = await api.get('/auth/me');
             setUser(res.data.user);
         } catch (error) {
-            logout();
+            console.warn('Failed to fetch user:', error.message);
+            // Don't logout on network errors - only on auth errors
+            if (error.response?.status === 401 || error.response?.status === 403) {
+                logout();
+            }
         } finally {
             setLoading(false);
         }
