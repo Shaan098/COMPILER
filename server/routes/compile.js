@@ -53,9 +53,20 @@ const executeWithGroq = async (code, language, input = '') => {
         'javascript': 'JavaScript'
     };
 
-    let enhancedPrompt = `You are a code execution simulator. You will simulate running the following ${languageNames[language]} code and provide ONLY the exact output that would be printed to the console.
+    // Detect if code contains input/read functions
+    const inputPatterns = {
+        'python': /\b(input\s*\(|sys\.stdin)/,
+        'javascript': /\b(prompt\s*\(|readline|process\.stdin)/,
+        'c': /\b(scanf|gets|fgets|getchar|getc)\s*\(/,
+        'cpp': /\b(cin\s*>>|getline\s*\(|scanf|gets)\b/,
+        'java': /\b(Scanner|BufferedReader|System\.in|readLine)\b/,
+    };
+    const codeNeedsInput = inputPatterns[language]?.test(code) ?? false;
 
-${input ? `IMPORTANT - USER PROVIDED INPUT (stdin):
+    // Build the prompt
+    let inputSection = '';
+    if (codeNeedsInput && input && input.trim()) {
+        inputSection = `IMPORTANT - USER PROVIDED INPUT (stdin):
 The program will read input values from stdin. Here are the values the user will provide, in order:
 ${input.split('\n').map((line, i) => `  Line ${i + 1}: "${line}"`).join('\n')}
 
@@ -63,12 +74,24 @@ When you see input functions like input(), scanf(), cin >>, Scanner.nextLine(), 
 
 Example: If the code calls input() twice, the first call gets "${input.split('\n')[0] || ''}" and the second call gets "${input.split('\n')[1] || ''}".
 
-` : ''}Code:
+`;
+    } else if (codeNeedsInput && (!input || !input.trim())) {
+        inputSection = `IMPORTANT: This code contains input/read functions but the user has NOT provided any input values.
+Do NOT make up or guess any input values. Instead, output EXACTLY this:
+"Error: This program requires user input. Please provide input values and run again."
+Do not simulate or guess the program output.
+
+`;
+    }
+
+    let enhancedPrompt = `You are a code execution simulator. You will simulate running the following ${languageNames[language]} code and provide ONLY the exact output that would be printed to the console.
+
+${inputSection}Code:
 \`\`\`${language}
 ${code}
 \`\`\`
 
-${input ? `Remember: Use the provided input values "${input.split('\n').join('", "')}" when input functions are called.` : ''}
+${(codeNeedsInput && input && input.trim()) ? `Remember: Use the provided input values "${input.split('\n').join('", "')}" when input functions are called.` : ''}
 
 Execute this code and respond with ONLY the console output. Include the prompts (like "Enter name:") if the code prints them, followed by the actual program output using the provided input values. Do not include explanations.`;
 

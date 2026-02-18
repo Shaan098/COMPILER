@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
+import { motion } from 'framer-motion';
+import { useTheme } from '../hooks/useTheme';
 
 const LANGUAGE_OPTIONS = [
     { value: 'python', label: 'Python', monacoLang: 'python' },
@@ -39,6 +41,20 @@ public class Main {
 
 const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) => {
     const currentLang = LANGUAGE_OPTIONS.find(l => l.value === language);
+    const { theme } = useTheme();
+    const [lineCount, setLineCount] = useState(1);
+
+    // Keyboard shortcut: Ctrl/Cmd + Enter to run
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                if (!loading) onRun();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onRun, loading]);
 
     const handleLanguageChange = (e) => {
         const newLang = e.target.value;
@@ -46,11 +62,16 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
         setCode(DEFAULT_CODE[newLang]);
     };
 
+    const handleEditorChange = useCallback((value) => {
+        setCode(value || '');
+        setLineCount((value || '').split('\n').length);
+    }, [setCode]);
+
     return (
         <div className="code-editor-container">
             <div className="editor-header">
                 <div className="language-selector">
-                    <label>Language:</label>
+                    <label>Language</label>
                     <select value={language} onChange={handleLanguageChange}>
                         {LANGUAGE_OPTIONS.map(lang => (
                             <option key={lang.value} value={lang.value}>
@@ -58,42 +79,80 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
                             </option>
                         ))}
                     </select>
+                    <span style={{
+                        fontSize: '0.72rem',
+                        color: 'var(--text-muted)',
+                        padding: '0.2rem 0.5rem',
+                        background: 'var(--bg-primary)',
+                        borderRadius: '6px',
+                        border: '1px solid var(--border-color)',
+                        fontWeight: 600,
+                    }}>
+                        {lineCount} lines
+                    </span>
                 </div>
-                <button
-                    className={`run-button ${loading ? 'loading' : ''}`}
-                    onClick={onRun}
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <>
-                            <span className="spinner"></span>
-                            Running...
-                        </>
-                    ) : (
-                        <>
-                            <span className="play-icon">▶</span>
-                            Run Code
-                        </>
-                    )}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <motion.button
+                        className={`run-button ${loading ? 'loading' : ''}`}
+                        onClick={onRun}
+                        disabled={loading}
+                        whileHover={!loading ? { scale: 1.04 } : {}}
+                        whileTap={!loading ? { scale: 0.96 } : {}}
+                    >
+                        {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                                Running...
+                            </>
+                        ) : (
+                            <>
+                                <span className="play-icon">▶</span>
+                                Run Code
+                            </>
+                        )}
+                    </motion.button>
+                    <span className="kbd-hint">
+                        <span className="kbd">Ctrl</span>
+                        <span>+</span>
+                        <span className="kbd">↵</span>
+                    </span>
+                </div>
             </div>
             <div className="editor-wrapper">
                 <Editor
                     height="100%"
                     language={currentLang?.monacoLang || 'python'}
                     value={code}
-                    onChange={(value) => setCode(value || '')}
-                    theme="vs-dark"
+                    onChange={handleEditorChange}
+                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     options={{
-                        fontSize: 16,
+                        fontSize: 15,
+                        fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+                        fontLigatures: true,
                         minimap: { enabled: false },
                         scrollBeyondLastLine: false,
                         automaticLayout: true,
-                        padding: { top: 16 },
+                        padding: { top: 16, bottom: 16 },
                         lineNumbers: 'on',
                         roundedSelection: true,
                         cursorBlinking: 'smooth',
-                        cursorSmoothCaretAnimation: 'on'
+                        cursorSmoothCaretAnimation: 'on',
+                        smoothScrolling: true,
+                        renderLineHighlight: 'all',
+                        bracketPairColorization: { enabled: true },
+                        guides: {
+                            bracketPairs: true,
+                            indentation: true,
+                        },
+                        suggest: {
+                            showMethods: true,
+                            showFunctions: true,
+                            showKeywords: true,
+                        },
+                        scrollbar: {
+                            verticalScrollbarSize: 8,
+                            horizontalScrollbarSize: 8,
+                        },
                     }}
                 />
             </div>
