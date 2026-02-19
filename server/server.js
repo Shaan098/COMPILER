@@ -18,7 +18,7 @@ const corsOptions = {
     // Get allowed origins from environment variable
     const allowedOrigins = process.env.FRONTEND_URL
       ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
-      : ['http://localhost:5173', 'http://localhost:3000'];
+      : ['http://localhost:5173', 'http://localhost:3000','https://vercel.com/shaan098s-projects/compiler-client'];
 
     if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
       callback(null, true);
