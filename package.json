@@ -13,6 +13,6 @@
         "start:server": "cd server && npm start"
     },
     "engines": {
-        "node": "20.11.1"
+        "node": "20.x"
     }
 }
