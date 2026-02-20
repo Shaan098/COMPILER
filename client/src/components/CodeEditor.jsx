@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../hooks/useTheme';
 
 const LANGUAGE_OPTIONS = [
-    { value: 'python', label: 'Python', monacoLang: 'python' },
-    { value: 'javascript', label: 'JavaScript', monacoLang: 'javascript' },
-    { value: 'c', label: 'C', monacoLang: 'c' },
-    { value: 'cpp', label: 'C++', monacoLang: 'cpp' },
-    { value: 'java', label: 'Java', monacoLang: 'java' }
+    { value: 'python', label: 'Python', monacoLang: 'python', ext: '.py' },
+    { value: 'javascript', label: 'JavaScript', monacoLang: 'javascript', ext: '.js' },
+    { value: 'c', label: 'C', monacoLang: 'c', ext: '.c' },
+    { value: 'cpp', label: 'C++', monacoLang: 'cpp', ext: '.cpp' },
+    { value: 'java', label: 'Java', monacoLang: 'java', ext: '.java' }
 ];
 
 const DEFAULT_CODE = {
@@ -43,6 +43,8 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
     const currentLang = LANGUAGE_OPTIONS.find(l => l.value === language);
     const { theme } = useTheme();
     const [lineCount, setLineCount] = useState(1);
+    const [charCount, setCharCount] = useState(0);
+    const [cursorPos, setCursorPos] = useState({ line: 1, col: 1 });
 
     // Keyboard shortcut: Ctrl/Cmd + Enter to run
     useEffect(() => {
@@ -65,7 +67,14 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
     const handleEditorChange = useCallback((value) => {
         setCode(value || '');
         setLineCount((value || '').split('\n').length);
+        setCharCount((value || '').length);
     }, [setCode]);
+
+    const handleEditorMount = useCallback((editor) => {
+        editor.onDidChangeCursorPosition((e) => {
+            setCursorPos({ line: e.position.lineNumber, col: e.position.column });
+        });
+    }, []);
 
     return (
         <div className="code-editor-container">
@@ -124,6 +133,7 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
                     language={currentLang?.monacoLang || 'python'}
                     value={code}
                     onChange={handleEditorChange}
+                    onMount={handleEditorMount}
                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     options={{
                         fontSize: 15,
@@ -155,6 +165,21 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
                         },
                     }}
                 />
+            </div>
+            <div className="editor-statusbar">
+                <div className="statusbar-left">
+                    <span className="statusbar-item statusbar-lang">
+                        {currentLang?.label}{currentLang?.ext}
+                    </span>
+                    <span className="statusbar-item">
+                        Ln {cursorPos.line}, Col {cursorPos.col}
+                    </span>
+                </div>
+                <div className="statusbar-right">
+                    <span className="statusbar-item">{lineCount} lines</span>
+                    <span className="statusbar-item">{charCount} chars</span>
+                    <span className="statusbar-item">UTF-8</span>
+                </div>
             </div>
         </div>
     );

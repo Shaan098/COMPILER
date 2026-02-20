@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 import CodeEditor from '../components/CodeEditor';
 import OutputPanel from '../components/OutputPanel';
@@ -72,6 +72,34 @@ const scaleIn = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] } }
 };
+
+// Animated number counter for hero stats
+const AnimatedCounter = ({ target, suffix = '' }) => {
+    const count = useMotionValue(0);
+    const rounded = useTransform(count, (v) => Math.round(v));
+    const [display, setDisplay] = useState(0);
+
+    useEffect(() => {
+        const controls = animate(count, target, {
+            duration: 2,
+            ease: 'easeOut',
+        });
+        const unsubscribe = rounded.on('change', (v) => setDisplay(v));
+        return () => { controls.stop(); unsubscribe(); };
+    }, [target, count, rounded]);
+
+    return <span>{display}{suffix}</span>;
+};
+
+const HERO_STATS = [
+    { value: 5, suffix: '+', label: 'Languages', icon: '🌐' },
+    { value: 50, suffix: 'ms', label: 'Avg Speed', icon: '⚡' },
+    { value: 99, suffix: '%', label: 'Uptime', icon: '🟢' },
+    { value: 1000, suffix: '+', label: 'Runs Today', icon: '🚀' },
+];
+
+const TYPING_WORDS = ['Code.', 'Compile.', 'Create Magic.'];
+
 
 const Home = () => {
     const [code, setCode] = useState(CODE_TEMPLATES.python);
@@ -186,6 +214,15 @@ const Home = () => {
         }
     };
 
+    const handleClear = () => {
+        setOutput('');
+        setStatus(null);
+        setExecutionTime(null);
+        setMemory(null);
+        setShareId(null);
+        toast.success('Output cleared', { icon: '🧹', duration: 1500 });
+    };
+
     const handleShare = async () => {
         if (shareId) {
             const link = `${window.location.origin}/share/${shareId}`;
@@ -256,6 +293,24 @@ const Home = () => {
                                 <br />
                                 Powered by Groq AI for blazing-fast performance.
                             </motion.p>
+
+                            {/* Live Stats */}
+                            <motion.div className="hero-stats-row" variants={fadeUp}>
+                                {HERO_STATS.map((stat, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="hero-stat-card"
+                                        variants={scaleIn}
+                                        whileHover={{ y: -4, scale: 1.05 }}
+                                    >
+                                        <span className="hero-stat-icon">{stat.icon}</span>
+                                        <span className="hero-stat-value">
+                                            <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                                        </span>
+                                        <span className="hero-stat-label">{stat.label}</span>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
 
                             <motion.button
                                 className="cta-button"
@@ -432,6 +487,7 @@ const Home = () => {
                             memory={memory}
                             shareId={shareId}
                             onShare={handleShare}
+                            onClear={handleClear}
                         />
                     ) : (
                         <div className="output-placeholder">
