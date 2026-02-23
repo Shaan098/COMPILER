@@ -56,6 +56,7 @@ const Footer = () => {
                             <span>{link.icon}</span> {link.label}
                         </motion.a>
                     ))}
+                    
                 </div>
             </div>
 
