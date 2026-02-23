@@ -101,9 +101,50 @@ const HERO_STATS = [
 const TYPING_WORDS = ['Code.', 'Compile.', 'Create Magic.'];
 
 
+let tabIdCounter = 1;
+
+const createTab = (lang = 'python') => ({
+    id: tabIdCounter++,
+    language: lang,
+    code: CODE_TEMPLATES[lang],
+    title: `Tab ${tabIdCounter - 1}`,
+});
+
 const Home = () => {
-    const [code, setCode] = useState(CODE_TEMPLATES.python);
-    const [language, setLanguage] = useState('python');
+    const [tabs, setTabs] = useState(() => [createTab('python')]);
+    const [activeTabId, setActiveTabId] = useState(1);
+    const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
+    const code = activeTab?.code || '';
+    const language = activeTab?.language || 'python';
+
+    const setCode = (newCode) => {
+        setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, code: newCode } : t));
+    };
+    const setLanguage = (newLang) => {
+        setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, language: newLang } : t));
+    };
+
+    const addTab = () => {
+        const newTab = createTab(language);
+        setTabs(prev => [...prev, newTab]);
+        setActiveTabId(newTab.id);
+    };
+
+    const closeTab = (tabId) => {
+        setTabs(prev => {
+            if (prev.length <= 1) return prev; // keep at least 1 tab
+            const filtered = prev.filter(t => t.id !== tabId);
+            if (activeTabId === tabId) {
+                setActiveTabId(filtered[filtered.length - 1].id);
+            }
+            return filtered;
+        });
+    };
+
+    const switchTab = (tabId) => {
+        setActiveTabId(tabId);
+    };
+
     const [output, setOutput] = useState('');
     const [status, setStatus] = useState(null);
     const [executionTime, setExecutionTime] = useState(null);
@@ -132,6 +173,8 @@ const Home = () => {
     const handleLanguageChange = (langId) => {
         setLanguage(langId);
         setCode(CODE_TEMPLATES[langId]);
+        // Also update the tab title to reflect the new language
+        setTabs(prev => prev.map(t => t.id === activeTabId ? { ...t, language: langId, code: CODE_TEMPLATES[langId] } : t));
         const langName = LANGUAGES.find(l => l.id === langId)?.name;
         toast.success(`Switched to ${langName}!`, { icon: '🔄', duration: 2000 });
     };
@@ -412,6 +455,11 @@ const Home = () => {
                         setLanguage={setLanguage}
                         onRun={runCode}
                         loading={loading}
+                        tabs={tabs}
+                        activeTabId={activeTabId}
+                        onAddTab={addTab}
+                        onCloseTab={closeTab}
+                        onSwitchTab={switchTab}
                     />
 
                     <div className="stdin-toggle-container">

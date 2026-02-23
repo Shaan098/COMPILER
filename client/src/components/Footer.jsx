@@ -4,9 +4,8 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const links = [
-        { label: 'GitHub', icon: '⭐', href: '#' },
-        { label: 'Docs', icon: '📖', href: '#' },
-        { label: 'Report Bug', icon: '🐛', href: '#' },
+        { label: 'GitHub', icon: '⭐', href: 'https://github.com/shaan098', target: '_blank' },
+        { label: 'Report Bug', icon: '🐛', href: 'mailto:shaansaurav633@gmail.com?subject=Bug%20Report%20-%20CodeCompiler', target: '_blank' },
     ];
 
     const stats = [
@@ -49,6 +48,8 @@ const Footer = () => {
                         <motion.a
                             key={i}
                             href={link.href}
+                            target={link.target || '_self'}
+                            rel="noopener noreferrer"
                             className="footer-link"
                             whileHover={{ y: -2, scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -56,7 +57,7 @@ const Footer = () => {
                             <span>{link.icon}</span> {link.label}
                         </motion.a>
                     ))}
-                    
+
                 </div>
             </div>
 

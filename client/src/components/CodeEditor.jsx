@@ -39,7 +39,7 @@ public class Main {
 }`
 };
 
-const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) => {
+const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading, tabs = [], activeTabId, onAddTab, onCloseTab, onSwitchTab }) => {
     const currentLang = LANGUAGE_OPTIONS.find(l => l.value === language);
     const { theme } = useTheme();
     const [lineCount, setLineCount] = useState(1);
@@ -78,6 +78,46 @@ const CodeEditor = ({ code, setCode, language, setLanguage, onRun, loading }) =>
 
     return (
         <div className="code-editor-container">
+            {/* Tab Bar */}
+            {tabs.length > 0 && (
+                <div className="editor-tabs-bar">
+                    <div className="editor-tabs-list">
+                        {tabs.map((tab, index) => {
+                            const tabLang = LANGUAGE_OPTIONS.find(l => l.value === tab.language);
+                            return (
+                                <div
+                                    key={tab.id}
+                                    className={`editor-tab ${tab.id === activeTabId ? 'active' : ''}`}
+                                    onClick={() => onSwitchTab(tab.id)}
+                                >
+                                    <span className="editor-tab-label">
+                                        {tabLang?.label || tab.language} {index + 1}
+                                    </span>
+                                    {tabs.length > 1 && (
+                                        <button
+                                            className="editor-tab-close"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onCloseTab(tab.id);
+                                            }}
+                                            title="Close tab"
+                                        >
+                                            ×
+                                        </button>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <button
+                        className="editor-tab-add"
+                        onClick={onAddTab}
+                        title="New tab"
+                    >
+                        +
+                    </button>
+                </div>
+            )}
             <div className="editor-header">
                 <div className="language-selector">
                     <label>Language</label>
