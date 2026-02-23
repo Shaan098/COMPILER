@@ -62,7 +62,7 @@ const Footer = () => {
             </div>
 
             <div className="footer-bottom">
-                <span>© {currentYear} CodeCompiler. Built by shaan with ReachJS.</span>
+                <span>© {currentYear} CodeCompiler. Built by shaan with MERN Stack.</span>
                 <span className="footer-version">v2.0</span>
             </div>
         </motion.footer>
