@@ -130,9 +130,9 @@ body {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(0, 200, 83, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(0, 230, 118, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(118, 255, 3, 0.05) 0%, transparent 60%);
+    radial-gradient(ellipse at 15% 20%, rgba(31, 111, 235, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(86, 212, 221, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(88, 166, 255, 0.05) 0%, transparent 60%);
   animation: meshFloat 20s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
@@ -146,8 +146,8 @@ body {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(0, 200, 83, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(0, 230, 118, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse at 15% 20%, rgba(9, 105, 218, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(5, 152, 188, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: -1;
 }
