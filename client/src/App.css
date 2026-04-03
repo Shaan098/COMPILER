@@ -5,51 +5,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* ===============================================
-   Dark Theme (Default) - Emerald Forest
+   Dark Theme (Default) - Professional Navy
    =============================================== */
 :root,
 [data-theme="dark"] {
-  --bg-primary: #060d0a;
-  --bg-secondary: #0c1a14;
-  --bg-tertiary: #12261b;
-  --bg-card: #0f1f17;
-  --bg-elevated: #162d21;
+  --bg-primary: #0f1119;
+  --bg-secondary: #161b23;
+  --bg-tertiary: #1c2128;
+  --bg-card: #151b22;
+  --bg-elevated: #1a1f26;
 
-  --text-primary: #e0f2e9;
-  --text-secondary: #9abfaa;
-  --text-muted: #5a7f68;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
 
-  --accent-primary: #00c853;
-  --accent-secondary: #76ff03;
-  --accent-cyan: #00e676;
-  --accent-green: #69f0ae;
-  --accent-pink: #b9f6ca;
-  --accent-orange: #ccff90;
-  --accent-red: #ff6b6b;
-  --accent-blue: #00e5ff;
+  --accent-primary: #1f6feb;
+  --accent-secondary: #58a6ff;
+  --accent-cyan: #56d4dd;
+  --accent-green: #3fb950;
+  --accent-pink: #d18ae5;
+  --accent-orange: #d29922;
+  --accent-red: #f85149;
+  --accent-blue: #58a6ff;
 
-  --gradient-main: linear-gradient(135deg, #00c853, #76ff03);
-  --gradient-cyan: linear-gradient(135deg, #00e676, #69f0ae);
-  --gradient-fire: linear-gradient(135deg, #76ff03, #00e5ff);
-  --gradient-sunset: linear-gradient(135deg, #ccff90, #00e676);
-  --gradient-ocean: linear-gradient(135deg, #00e5ff, #00e676);
-  --gradient-aurora: linear-gradient(135deg, #00c853, #76ff03, #69f0ae);
+  --gradient-main: linear-gradient(135deg, #1f6feb, #58a6ff);
+  --gradient-cyan: linear-gradient(135deg, #56d4dd, #58a6ff);
+  --gradient-fire: linear-gradient(135deg, #d29922, #f85149);
+  --gradient-sunset: linear-gradient(135deg, #d18ae5, #f85149);
+  --gradient-ocean: linear-gradient(135deg, #58a6ff, #56d4dd);
+  --gradient-aurora: linear-gradient(135deg, #1f6feb, #58a6ff, #56d4dd);
 
-  --border-color: rgba(0, 200, 83, 0.12);
-  --border-glow: rgba(0, 200, 83, 0.3);
+  --border-color: rgba(48, 113, 244, 0.15);
+  --border-glow: rgba(88, 166, 255, 0.25);
 
-  --glow-primary: 0 0 20px rgba(0, 200, 83, 0.4), 0 0 60px rgba(0, 200, 83, 0.15);
-  --glow-cyan: 0 0 20px rgba(0, 230, 118, 0.4), 0 0 60px rgba(0, 230, 118, 0.15);
-  --glow-pink: 0 0 20px rgba(118, 255, 3, 0.4);
-  --glow-green: 0 0 20px rgba(105, 240, 174, 0.4);
+  --glow-primary: 0 0 20px rgba(31, 111, 235, 0.3), 0 0 60px rgba(31, 111, 235, 0.1);
+  --glow-cyan: 0 0 20px rgba(86, 212, 221, 0.3), 0 0 60px rgba(86, 212, 221, 0.1);
+  --glow-pink: 0 0 20px rgba(209, 138, 229, 0.3);
+  --glow-green: 0 0 20px rgba(63, 185, 80, 0.3);
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.6);
 
-  --glass-bg: rgba(12, 26, 20, 0.85);
-  --glass-border: rgba(0, 200, 83, 0.15);
+  --glass-bg: rgba(21, 27, 34, 0.9);
+  --glass-border: rgba(48, 113, 244, 0.15);
 }
 
 /* ===============================================
