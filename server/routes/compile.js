@@ -175,7 +175,6 @@ router.get('/mode', (req, res) => {
 router.post('/run', authMiddleware, async (req, res) => {
     try {
         const { code, language, input = '' } = req.body;
-
         // Validate input
         if (!code || !language) {
             return res.status(400).json({ error: 'Code and language are required' });
