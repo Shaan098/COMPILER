@@ -171,8 +171,7 @@ router.get('/mode', (req, res) => {
         message: hasGroq ? 'Using Groq AI for code execution' : 'Running in demo mode'
     });
 });
-
-// Compile and run code
+// Compile and run cod
 router.post('/run', authMiddleware, async (req, res) => {
     try {
         const { code, language, input = '' } = req.body;
