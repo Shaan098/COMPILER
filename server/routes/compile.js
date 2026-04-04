@@ -184,10 +184,8 @@ router.post('/run', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid language. Supported: c, cpp, python, java, javascript' });
         }
         console.log(`🤖 Executing ${language} code with Groq AI...`);
-
         // Execute using Groq AI
         const result = await executeWithGroq(code, language, input);
-
         // Try to save submission to database (optional - don't fail if DB is down)
         let submissionId = null;
         let shareId = null;
