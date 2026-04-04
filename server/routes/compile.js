@@ -166,7 +166,7 @@ router.get('/template/:language', (req, res) => {
     res.json({ template });
 });
 
-// Check API mod
+// Check API mode
 router.get('/mode', (req, res) => {
     const hasGroq = process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.startsWith('gsk_');
     res.json({
