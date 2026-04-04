@@ -162,7 +162,6 @@ router.get('/template/:language', (req, res) => {
     if (!template) {
         return res.status(400).json({ error: 'Invalid language' });
     }
-
     res.json({ template });
 });
 
