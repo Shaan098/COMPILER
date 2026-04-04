@@ -153,12 +153,10 @@ Execute this code and respond with ONLY the console output. Include the prompts 
         };
     }
 };
-
 // Get default template
 router.get('/template/:language', (req, res) => {
     const { language } = req.params;
     const template = CODE_TEMPLATES[language];
-
     if (!template) {
         return res.status(400).json({ error: 'Invalid language' });
     }
