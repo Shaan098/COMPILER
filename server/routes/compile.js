@@ -179,12 +179,10 @@ router.post('/run', authMiddleware, async (req, res) => {
         if (!code || !language) {
             return res.status(400).json({ error: 'Code and language are required' });
         }
-
         const languageId = LANGUAGE_IDS[language];
         if (!languageId) {
             return res.status(400).json({ error: 'Invalid language. Supported: c, cpp, python, java, javascript' });
         }
-
         console.log(`🤖 Executing ${language} code with Groq AI...`);
 
         // Execute using Groq AI
