@@ -80,22 +80,27 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running!' });
 });
 
-const PORT = parseInt(process.env.PORT, 10) || 5000;
+const PORT = process.env.PORT || 5000;
 
 const startServer = (port) => {
-  const server = app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}`);
-  });
+  try {
+    const server = app.listen(port, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${port}`);
+    });
 
-  server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`Port ${port} in use, trying ${port + 1}...`);
-      startServer(port + 1);
-    } else {
-      console.error('Server error:', err);
-      process.exit(1);
-    }
-  });
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} in use, trying ${port + 1}...`);
+        startServer(port + 1);
+      } else {
+        console.error('Server error:', err);
+        process.exit(1);
+      }
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error.message);
+    process.exit(1);
+  }
 };
 
 startServer(PORT);
