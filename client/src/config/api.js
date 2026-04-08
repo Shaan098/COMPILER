@@ -7,7 +7,9 @@ import axios from 'axios';
 // Default base URL (can be overridden via VITE_API_URL)
 const DEFAULT_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 // If the default uses localhost:5000, prepare a fallback port.
-const ALTERNATE_URL = DEFAULT_URL.replace('5000', '5001');
+const ALTERNATE_URL = DEFAULT_URL.includes('localhost:5000') 
+  ? DEFAULT_URL.replace('5000', '5001')
+  : DEFAULT_URL; // For production, don't try alternate ports
 
 // Create axios instance with default baseURL
 const api = axios.create({ baseURL: DEFAULT_URL });
