@@ -249,9 +249,28 @@ const Home = () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            setOutput(error.response?.data?.error || 'An error occurred while running the code');
+            
+            // Extract detailed error message
+            let errorMessage = 'An error occurred while running the code';
+            
+            if (error.response?.data?.error) {
+                errorMessage = error.response.data.error;
+            } else if (error.response?.data?.details) {
+                errorMessage = `Error: ${error.response.data.details}`;
+            } else if (error.message) {
+                errorMessage = `Network Error: ${error.message}`;
+            }
+            
+            // Log full error for debugging
+            console.error('Full error:', {
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message
+            });
+            
+            setOutput(errorMessage);
             setStatus('error');
-            toast.error('Error running code');
+            toast.error(errorMessage, { duration: 3000 });
         } finally {
             setLoading(false);
         }

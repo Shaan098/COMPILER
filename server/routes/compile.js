@@ -143,10 +143,23 @@ Execute this code and respond with ONLY the console output. Include the prompts 
             memory: Math.floor(Math.random() * 5000) + 1000 // Simulated
         };
     } catch (error) {
-        console.error('Groq API error:', error);
+        console.error('Groq API error:', error.message || error);
+        
+        // Provide specific error messages
+        let errorMessage = 'AI Execution Error';
+        if (error.message?.includes('API key')) {
+            errorMessage = 'API key configuration error. Please check GROQ_API_KEY.';
+        } else if (error.message?.includes('authentication') || error.message?.includes('401')) {
+            errorMessage = 'Authentication failed with Groq API. Invalid or expired API key.';
+        } else if (error.message?.includes('rate limit')) {
+            errorMessage = 'Rate limit exceeded. Please try again in a moment.';
+        } else if (error.message?.includes('timeout')) {
+            errorMessage = 'Request timeout. The AI service took too long to respond.';
+        }
+        
         return {
             success: false,
-            output: `AI Execution Error: ${error.message}`,
+            output: `${errorMessage}: ${error.message}`,
             status: 'error',
             executionTime: 0,
             memory: 0
