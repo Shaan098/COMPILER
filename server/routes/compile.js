@@ -5,10 +5,16 @@ const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Initialize Groq client
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY
-});
+// Initialize Groq client (lazy initialization to prevent crash if key is missing)
+let groq = null;
+const initializeGroq = () => {
+  if (!groq && process.env.GROQ_API_KEY) {
+    groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY
+    });
+  }
+  return groq;
+};
 
 // Language ID mapping
 const LANGUAGE_IDS = {
@@ -99,8 +105,19 @@ Execute this code and respond with ONLY the console output. Include the prompts 
 
     try {
         const startTime = Date.now();
+        
+        const groqClient = initializeGroq();
+        if (!groqClient) {
+            return {
+                success: false,
+                output: 'Error: GROQ_API_KEY is not configured. Please check server environment variables.',
+                status: 'error',
+                executionTime: 0,
+                memory: 0
+            };
+        }
 
-        const completion = await groq.chat.completions.create({
+        const completion = await groqClient.chat.completions.create({
             messages: [
                 {
                     role: "system",
