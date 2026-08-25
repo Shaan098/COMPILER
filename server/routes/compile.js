@@ -128,7 +128,7 @@ Execute this code and respond with ONLY the console output. Include the prompts 
                     content: prompt
                 }
             ],
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-120b",
             temperature: 0,
             max_tokens: 2000
         });
