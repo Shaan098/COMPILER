@@ -9,6 +9,7 @@ const submissionRoutes = require('./routes/submissions');
 
 const app = express();
 
+
 // CORS Configuration
 const corsOptions = {
   origin: function (origin, callback) {
